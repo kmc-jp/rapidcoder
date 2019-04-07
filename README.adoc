@@ -1,0 +1,33 @@
+= rapidcoder
+
+== これは何か？
+ラピッドコーディング祭りのキット（2018年度以降）。
+
+== 必要なもの（キットを用いた開発）
+* Processing 3.x
+* unzip
+
+== 必要なもの（キットの作成、キット自体の開発）
+* Processing 3.x
+* git
+* git-lfs
+* bash
+* zip
+
+== キットを使って開発
+. Releaseから `rapid*.zip` をダウンロードします
+. ZIPアーカイブを展開します
+. `rapid*/rapid*.pde` をProcessing 3で開いて編集します
+
+== キットの準備
+. Git LFSをインストールします
+. このリポジトリをクローンします
+. `build_kit.sh` を実行します
+
+== キットの開発
+. Git LFSをインストールします
+. このリポジトリをクローンします
+. `src/src.pde` をProcessing 3で開いて編集します
+
+== ライセンス
+`rapid2018.zip` として配布したもののうち、　`RGraphics.pde` 、 `KeyboardManager.pde` 、 `rapid2018.pde` でゲーム開発のために追加した以外の部分はCC0、コミット `ここにコミットIDが入る` 以降はThe MIT Licenseのもとで提供されます。

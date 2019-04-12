@@ -35,7 +35,7 @@ void setup() {
     // ここで読み込めていない場合はWindowsと同じで'\'で区切るのかもしれない
     font = createFont("fonts\\VL-PGothic-Regular.ttf", 24);
   }
-  //textFont(font);
+  textFont(font);
   // 文字描画位置を設定する（座標が左上）
   textAlign(LEFT, TOP);
   println("\t[ OK ]");

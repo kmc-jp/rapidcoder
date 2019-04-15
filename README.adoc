@@ -30,4 +30,4 @@
 . `src/src.pde` をProcessing 3で開いて編集します
 
 == ライセンス
-`rapid2018.zip` として配布したもののうち、　`RGraphics.pde` 、 `KeyboardManager.pde` 、 `rapid2018.pde` でゲーム開発のために追加した以外の部分はCC0、コミット `ここにコミットIDが入る` 以降はThe MIT Licenseのもとで提供されます。ただし、 `data/fonts` 以下にある各種フォントについては、同梱されたフォントそれぞれのライセンスのもとで提供されます
+`rapid2018.zip` として配布したもののうち、　`RGraphics.pde` 、 `KeyboardManager.pde` 、 `rapid2018.pde` でゲーム開発のために追加した以外の部分はCC0、コミット `d909bec6931528667a2019aae04d828d1956b0f5` 以降はThe MIT Licenseのもとで提供されます。ただし、 `data/fonts` 以下にある各種フォントについては、同梱されたフォントそれぞれのライセンスのもとで提供されます

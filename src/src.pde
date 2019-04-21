@@ -28,7 +28,7 @@ void setup() {
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
   // フォントを読み込む
-  font = createFont("fonts/VL-PGothic-Regular", 24);
+  font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
   if(font == null) {
     // ここで読み込めていない場合はWindowsと同じで'\'で区切るのかもしれない
     font = createFont("fonts\\VL-PGothic-Regular.ttf", 24);

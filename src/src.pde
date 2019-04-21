@@ -16,11 +16,9 @@ PFont font;
 Minim minim;
 // ゲームシステム用変数ここまで
 
-
 // 以下にグローバル変数を宣言します
 
 // グローバル変数ここまで
-
 
 // スケッチ実行時に最初に１度だけ実行されます
 void setup() {
@@ -30,7 +28,7 @@ void setup() {
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
   // フォントを読み込む
-  font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
+  font = createFont("fonts/VL-PGothic-Regular", 24);
   if(font == null) {
     // ここで読み込めていない場合はWindowsと同じで'\'で区切るのかもしれない
     font = createFont("fonts\\VL-PGothic-Regular.ttf", 24);
@@ -56,7 +54,6 @@ void setup() {
   println("完了.");
   // ゲームシステムの初期化ここまで
   
-  
   // 以下に追加の初期化処理を書きます
   
   // 初期化処理ここまで
@@ -74,13 +71,12 @@ void draw(){
   // ゲームの処理ここまで
 }
 
-
-// 何かキーが押されたときに行う処理を書きます
+// 何かキーが押されたときに行う処理を書きます（よくわからなかったらとりあえずそのままにしておいてください）
 void keyPressed() {
   // 押されたキーを確認する（KeyboardManager keymanを動作させるために必要）
   keyman.keyPressedHook();
 }
-// 何かキーが離されたときに行う処理を書きます
+// 何かキーが離されたときに行う処理を書きます（よくわからなかったらとりあえずそのままにしておいてください）
 void keyReleased() {
   // 離されたキーを確認する（KeyboardManager keymanを動作させるために必要）
   keyman.keyReleasedHook();

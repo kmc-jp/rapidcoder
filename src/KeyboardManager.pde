@@ -65,7 +65,10 @@ class KeyboardManager {
   }
   // key_codeに対応する特殊キーが押されているかどうかを確かめます
   // 返り値: キーが押されている=true, それ以外=false
-  boolean getSpecialKey(int key_code) {
+  boolean getKey(int key_code){
+    return getSpecialKey(key_code);
+  }
+  private boolean getSpecialKey(int key_code) {
     if(this.specialKeyState.hasKey(str(key_code)) == true) {
       if(this.specialKeyState.get(str(key_code)) == 1) {
         return true;
@@ -76,17 +79,26 @@ class KeyboardManager {
       return false;
     }
   }
-  
+  // キーが押された瞬間かどうかを確かめます
+  // 返り値: キーが押された瞬間=true, それ以外=false
   boolean getKeyPush(String s_key){
     return getKey(s_key)&&!getPrevKey(s_key);
   }
-  boolean getSpecialKeyPush(int key_code){
+  boolean getKeyPush(int key_code){
+    return getSpecialKeyPush(key_code);
+  }
+  private boolean getSpecialKeyPush(int key_code){
     return getSpecialKey(key_code)&&!getPrevSpecialKey(key_code);
   }
+  // キーが離された瞬間かどうかを確かめます
+  // 返り値: キーが離された瞬間=true, それ以外=false
   boolean getKeyRelease(String s_key){
     return !getKey(s_key)&&getPrevKey(s_key);
   }
-  boolean getSpecialKeyRelease(int key_code){
+  boolean getKeyRelease(int key_code){
+    return getSpecialKeyRelease(key_code);
+  } 
+  private boolean getSpecialKeyRelease(int key_code){
     return !getSpecialKey(key_code)&&getPrevSpecialKey(key_code);
   }
   

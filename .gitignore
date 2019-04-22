@@ -1,3 +1,8 @@
+# Release binaries
 rapid*.zip
 
+# Documentation
+docs/html/
+
+# Temporary files
 .DS_Store

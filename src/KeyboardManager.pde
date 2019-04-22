@@ -109,8 +109,7 @@ public class KeyboardManager {
 
 
   // 内部用 && 広報互換性を保つために残す
-  // FIXME: publicでないと前の実装が壊れる
-  private boolean getSpecialKey(int key_code) {
+  public boolean getSpecialKey(int key_code) {
     if(this.specialKeyState.hasKey(str(key_code)) == true) {
       if(this.specialKeyState.get(str(key_code)) == 1) {
         return true;

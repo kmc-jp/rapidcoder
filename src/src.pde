@@ -9,6 +9,8 @@ import ddf.minim.ugens.*;
 // ゲームシステム用変数（よくわからなかったらとりあえずそのままにしておいてください）
 // キーボード入力管理用のKeyboardManager
 KeyboardManager keyman;
+// 当たり判定取得用のCollisionManager
+CollisionManager colman;
 // フォント（環境によって違ったらヤバそうなので一応スケッチに付属させたVLゴシックを使うことにしている）
 PFont font;
 
@@ -27,6 +29,8 @@ void setup() {
   print("文字列描画を初期化中......");
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
+  // CollisionManagerのインスタンスを作成
+  colman = new CollisionManager(this);
   // フォントを読み込む
   font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
   if(font == null) {

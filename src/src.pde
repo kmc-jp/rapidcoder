@@ -6,8 +6,6 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-import java.lang.reflect.*;
-
 // ゲームシステム用変数（よくわからなかったらとりあえずそのままにしておいてください）
 // キーボード入力管理用のKeyboardManager
 KeyboardManager keyman;
@@ -21,8 +19,7 @@ Minim minim;
 // ゲームシステム用変数ここまで
 
 // 以下にグローバル変数を宣言します
-ArrayList<PShape> list = new ArrayList<PShape>();
-PShape mouse;
+
 // グローバル変数ここまで
 
 // スケッチ実行時に最初に１度だけ実行されます
@@ -62,14 +59,7 @@ void setup() {
   // ゲームシステムの初期化ここまで
   
   // 以下に追加の初期化処理を書きます
-  for(int i = 0;i<100;++i){
-    rectMode(CENTER);
-    PShape s = createShape(RECT,random(0,800),random(0,600),random(10,100),random(10,100));
-    if((int)random(0,2)==0){
-      s.rotate(PI/6.0);
-    }
-    list.add(s);
-  }
+
   // 初期化処理ここまで
 }
 
@@ -81,21 +71,7 @@ void draw(){
   background(255, 255, 255);
   
   // 以下にゲームの処理を書きます
-  rectMode(CENTER);
-  mouse = createShape(RECT,mouseX,mouseY,50,50);
-  
-  for(PShape s : list){
-    if(colman.isHit(s,mouse)){
-      s.setFill(color(255,0,0));
-    }else{
-      s.setFill(color(0,0,255));
-    }
-    //rotate(PI/3.0);
-    shape(s);
-  }
-  
-  resetMatrix();
-  shape(mouse);
+
   // ゲームの処理ここまで
 }
 

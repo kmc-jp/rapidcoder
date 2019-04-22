@@ -1,9 +1,16 @@
+import java.lang.*;
+
 /**
  * キーボードの入力を管理するクラス
  */
 public class KeyboardManager {
   // IntDictでキーの状態を保持する
   // キー: str(key)(KeyState)およびstr(keyCode)(specialKeyState)
+
+  /**
+   * 大文字と小文字を区別するか
+   */
+  public boolean ignoreUpperCase = true;
 
   /**
    * ASCII文字キーの現在の状態を保持するIntDict
@@ -46,6 +53,26 @@ public class KeyboardManager {
     prevKeyState = new IntDict();
     prevSpecialKeyState= new IntDict();
   }
+  
+  /**
+   * 押したキーのStringが返ってくる
+   */
+  public ArrayList<String> getKeyString(){
+    ArrayList<String> res = new ArrayList<String>();
+    for(int i = 0; i< keyState.size();++i){
+      String s_key = keyState.key(i);
+      if(keyState.value(i) == 1){
+        if(prevKeyState.hasKey(s_key)){
+          if(prevKeyState.get(s_key)==0){
+            res.add(s_key);
+          }
+        }else{
+          res.add(s_key);
+        }
+      }
+    }
+    return res;
+  }
 
   /**
    * keyPressedで行う入力状態の更新をするメソッド
@@ -55,7 +82,16 @@ public class KeyboardManager {
     if(key == CODED) {
       this.c_specialKeyState.set(str(keyCode), 1);
     } else {
-      this.c_keyState.set(str(key), 1);
+      if(Character.isUpperCase(key)){
+        this.c_keyState.set(str(key), 1);
+        this.c_keyState.set(str(Character.toLowerCase(key)), 0);
+      }else
+      if(Character.isLowerCase(key)){
+        this.c_keyState.set(str(key), 1);
+        this.c_keyState.set(str(Character.toUpperCase(key)), 0);
+      }else{
+        this.c_keyState.set(str(key), 1);
+      }
     }
   }
 
@@ -87,6 +123,22 @@ public class KeyboardManager {
    * @return キーが押されている=true, それ以外=false
    */
   public boolean getKey(String s_key) {
+    if(ignoreUpperCase){
+      char c = s_key.charAt(0);
+      if(Character.isUpperCase(c)||
+         Character.isLowerCase(c)){
+        return 
+          getKeyImpl(str(Character.toUpperCase(c)))||
+          getKeyImpl(str(Character.toLowerCase(c)));
+      }else{
+        return getKeyImpl(s_key);
+      }
+    }else{
+      return getKeyImpl(s_key);
+    }
+  }
+  
+  boolean getKeyImpl(String s_key){
     if(this.keyState.hasKey(s_key) == true) {
       if(this.keyState.get(s_key) == 1) {
         return true;
@@ -170,6 +222,21 @@ public class KeyboardManager {
 
   //内部用
   private boolean getPrevKey(String s_key) {
+    if(ignoreUpperCase){
+      char c = s_key.charAt(0);
+      if(Character.isUpperCase(c)||
+         Character.isLowerCase(c)){
+        return 
+          getPrevKeyImpl(str(Character.toUpperCase(c)))||
+          getPrevKeyImpl(str(Character.toLowerCase(c)));
+      }else{
+        return getPrevKeyImpl(s_key);
+      }
+    }else{
+      return getPrevKeyImpl(s_key);
+    }
+  }
+  private boolean getPrevKeyImpl(String s_key){
     if(this.prevKeyState.hasKey(s_key) == true) {
       if(this.prevKeyState.get(s_key) == 1) {
         return true;

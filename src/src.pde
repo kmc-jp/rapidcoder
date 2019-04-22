@@ -1,15 +1,15 @@
-// ライブラリを読み込み（よくわからなかったらとりあえずそのままにしておいてください）
+// ライブラリを読み込み（よくわからなかったらとりあえずそのままにしておいてください） //<>//
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
-import java.lang.reflect.*;
 
 // ゲームシステム用変数（よくわからなかったらとりあえずそのままにしておいてください）
 // キーボード入力管理用のKeyboardManager
 KeyboardManager keyman;
+// 当たり判定取得用のCollisionManager
 CollisionManager colman;
 // フォント（環境によって違ったらヤバそうなので一応スケッチに付属させたVLゴシックを使うことにしている）
 PFont font;
@@ -19,7 +19,7 @@ Minim minim;
 // ゲームシステム用変数ここまで
 
 // 以下にグローバル変数を宣言します
-ArrayList<PShape> s;
+
 // グローバル変数ここまで
 
 // スケッチ実行時に最初に１度だけ実行されます
@@ -29,6 +29,7 @@ void setup() {
   print("文字列描画を初期化中......");
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
+  // CollisionManagerのインスタンスを作成
   colman = new CollisionManager(this);
   // フォントを読み込む
   font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
@@ -46,7 +47,7 @@ void setup() {
   size(800, 600);
   // フレームレート（単位はフレーム毎秒）
   // １秒間にここに指定した回数だけdraw()が呼ばれる
-  frameRate(999);
+  frameRate(30);
   println("\t[ OK ]");
   
   print("サウンドシステムを初期化中......");
@@ -57,15 +58,8 @@ void setup() {
   println("完了.");
   // ゲームシステムの初期化ここまで
   
-  // 以下にゲームの処理を書きます
-  
   // 以下に追加の初期化処理を書きます
-  s = new ArrayList<PShape>();
-  for(int i = 0;i<100;++i){
-  rectMode((int)random(2,5)%4);
-  float r = random(10,100);
-  s.add(createShape(RECT,random(0,800),random(0,600),random(10,100),random(10,100)));
-  }
+  
   // 初期化処理ここまで
 }
 
@@ -76,21 +70,9 @@ void draw(){
   // 画面の消去（背景色をここで指定する）
   background(255, 255, 255);
   
-  rectMode(CENTER);
-  PShape t = createShape(RECT,mouseX,mouseY,30,30);
-  for(PShape sh : s){
-    if(colman.isHit(sh,t)){
-      sh.setFill(color(255,0,0));
-    }else{
-      sh.setFill(color(0,0,255));
-    }
-    shape(sh);
-  }
+  // 以下にゲームの処理を書きます
 
-  shape(t);
- 
-  fill(0);
-  text(frameRate,0,0); //<>//
+  // ゲームの処理ここまで
 }
 
 // 何かキーが押されたときに行う処理を書きます（よくわからなかったらとりあえずそのままにしておいてください）

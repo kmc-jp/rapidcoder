@@ -3,14 +3,12 @@ import processing.core.*;
 import java.lang.reflect.*;
 
 class CollisionManager{
-  PApplet sketch;
-  
-  public CollisionManager(PApplet sketch){
-    this.sketch = sketch;
-  }
-  
-  final float FLT_EPSILON = 1.19209290E-07F;
-  
+  /**
+   * 当たり判定を取得するメソッド
+   * @param s 1つめの図形
+   * @param t 2つめの図形
+   * @return 図形が重なっている=true, それ以外=false
+   */
   public boolean isHit(PShape s,PShape t){
     try{
       if(isCircle(s)&&isCircle(t)){
@@ -27,6 +25,14 @@ class CollisionManager{
       return false;
     }
   }
+  
+  PApplet sketch;
+  
+  public CollisionManager(PApplet sketch){
+    this.sketch = sketch;
+  }
+  
+  final float FLT_EPSILON = 1.19209290E-07F;
   
   boolean isHitRectRect(PShape s,PShape t) throws Exception {
     Rect sr = new Rect(s);

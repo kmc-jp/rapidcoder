@@ -13,6 +13,7 @@
 * git-lfs
 * bash
 * zip
+* doxygen（ドキュメントをビルドする場合）
 
 == キットを使って開発
 . Releaseから `rapid*.zip` をダウンロードします
@@ -28,6 +29,9 @@
 . Git LFSをインストールします
 . このリポジトリをクローンします
 . `src/src.pde` をProcessing 3で開いて編集します
+
+== ドキュメントのビルド
+. `build_docs.sh` を実行します
 
 == ライセンス
 `rapid2018.zip` として配布したもののうち、　`RGraphics.pde` 、 `KeyboardManager.pde` 、 `rapid2018.pde` でゲーム開発のために追加した以外の部分はCC0、コミット `d909bec6931528667a2019aae04d828d1956b0f5` 以降はThe MIT Licenseのもとで提供されます。ただし、 `data/fonts` 以下にある各種フォントについては、同梱されたフォントそれぞれのライセンスのもとで提供されます

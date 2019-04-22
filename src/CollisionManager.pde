@@ -4,18 +4,22 @@ import java.lang.reflect.*;
 
 class CollisionManager{
   /**
-   * 当たり判定を取得するメソッド
+   * 当たり判定を取得するメソッド 2次元で使うこと
    * @param s 1つめの図形
    * @param t 2つめの図形
    * @return 図形が重なっている=true, それ以外=false
    */
   public boolean isHit(PShape s,PShape t){
     try{
-      if(isCircle(s)&&isCircle(t)){
-        return isHitCircleCircle(s,t);
-      }
-      if(isRect(s)&&isRect(t)){
-        return isHitRectRect(s,t);
+      PMatrix2D sm = PShape2PMatrix2D(s);
+      PMatrix2D tm = PShape2PMatrix2D(t);
+      if(equalm(sm,tm)){
+        if(isCircle(s)&&isCircle(t)){
+          return isHitCircleCircle(s,t);
+        }
+        if(isRect(s)&&isRect(t)){
+          return isHitRectRect(s,t);
+        }
       }
       
       println("その図形はサポートされていません。: (" + s + ") , (" + t + ")");
@@ -32,7 +36,7 @@ class CollisionManager{
     this.sketch = sketch;
   }
   
-  final float FLT_EPSILON = 1.19209290E-07F;
+  final float FLT_EPSILON = 1.E-03F;
   
   boolean isHitRectRect(PShape s,PShape t) throws Exception {
     Rect sr = new Rect(s);
@@ -64,11 +68,6 @@ class CollisionManager{
     return s.getKind()==RECT;
   }
   
-  //floatの一致判定
-  boolean equalf(float a,float b){
-    return abs(a - b) <= FLT_EPSILON * max(1.f, max(abs(a), abs(b)));
-  }
-  
   class Rect{
     float cx,cy,harfw,harfh;
     public Rect(float cx,float cy,float w,float h){
@@ -91,7 +90,7 @@ class CollisionManager{
             Set((p[0]+p[2])/2,(p[1]+p[3])/2,abs(p[0]-p[2])/2,abs(p[1]-p[3])/2);
             break;
           default:
-            throw new Exception("不正なellipseModeです。:" + s);
+            throw new Exception("不正なrectModeです。:" + s);
         }
       }else{
         throw new Exception("RECTでないPShapeを変換しようとしました。:" + s);
@@ -140,6 +139,31 @@ class CollisionManager{
       this.rx = rx;
       this.ry = ry;
     }
+  }
+  
+  //デバッグ用
+  void printMatrix(PMatrix2D sm){
+    println(sm.m00+" "+sm.m01+" "+sm.m02);
+    println(sm.m10+" "+sm.m11+" "+sm.m12);
+  }
+  
+  //floatの一致判定
+  boolean equalf(float a,float b){
+    return abs(a - b) <= FLT_EPSILON * max(1.f, max(abs(a), abs(b)));
+  }
+  
+  //PMatrix2Dの一致判定
+  boolean equalm(PMatrix2D s,PMatrix2D t){
+    return 
+      equalf(s.m00,t.m00)&&equalf(s.m01,t.m01)&&equalf(s.m02,t.m02)&&
+      equalf(s.m10,t.m10)&&equalf(s.m11,t.m11)&&equalf(s.m12,t.m12);
+  }
+  
+  //PShapeからPMatrix2Dを取得
+  PMatrix2D PShape2PMatrix2D(PShape s) throws Exception {
+    PMatrix2D m = (PMatrix2D)PShapeField(s,"matrix");
+    if(m == null) m = new PMatrix2D();
+    return m;
   }
   
   //PShapeからRectModeを取得

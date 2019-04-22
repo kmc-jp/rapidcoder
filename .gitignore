@@ -6,3 +6,4 @@ docs/html/
 
 # Temporary files
 .DS_Store
+*.autosave

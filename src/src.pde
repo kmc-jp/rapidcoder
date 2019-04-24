@@ -61,10 +61,15 @@ void setup() {
 
   // 以下に追加の初期化処理を書きます
   s = createShape(RECT,0,0,80,160);
-  s.translate(100,100);
+  s.translate(100, 0);
+  s.scale(5,2);
   s.rotate(PI/4.0);
+  s.translate(100, 0);
   t = createShape(RECT,0,0,80,160);
-  t.translate(100,100);
+  t.scale(5,2);
+  t.rotate(PI/4.0);
+  t.translate(100, 0);
+  t.translate(100, 0);
   // 初期化処理ここまで
 }
 
@@ -76,8 +81,8 @@ void draw(){
   background(255, 255, 255);
 
   // 以下にゲームの処理を書きます
-  shape(s);
   shape(t);
+  shape(s);
   // ゲームの処理ここまで
 }
 

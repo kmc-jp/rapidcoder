@@ -128,59 +128,25 @@ class CollisionManager{
     return s.getKind()==RECT;
   }
 
-  //PMatrixを分割する。varidateしてない。
-  class Affine{
-    PVector translate;
-    float rotate;
-    PVector scale;
-    float shearX;
+  //平行移動+拡大のみであるか
+  boolean isGoodRect(PShape s){
+    PMatrix2D sm = PShape2PMatrix2D(s);
+    PVector v00 = m.mult(new PVector(0,0),null);
+    PVector v10 = m.mult(new PVector(1,0),null).sub(v00);
+    PVector v01 = m.mult(new PVector(0,1),null).sub(v00);
+    return equalf(v10.y,0) && equalf(v01.x,0);
+  }
 
-    public Affine(PMatrix2D m){
-      translate = m.mult(new PVector(0,0),null);
-      rotate = 0;
-      shearX = 0;
+  //平行移動+回転+いい拡大のみであるか
+  boolean isGoodCircle(PShape s) throws Exception{
+    PMatrix2D sm = PShape2PMatrix2D(s);
+    PVector v00 = m.mult(new PVector(0,0),null);
+    PVector v10 = m.mult(new PVector(1,0),null).sub(v00);
+    PVector v01 = m.mult(new PVector(0,1),null).sub(v00);
 
-      PVector v10 = m.mult(new PVector(1,0),null).sub(translate);
-      PVector v01 = m.mult(new PVector(0,1),null).sub(translate);
-
-      scale = new PVector(PVector.dist(translate,v10),PVector.dist(translate,v01));
-
-      float ang10 =  v10.heading();
-      float ang01 =  v01.heading();
-      if(ang10<0)
-        ang10 += PI;
-      if(ang01<0)
-        ang01 += PI;
-      float angbetween = ang01 - ang10;
-
-      if(angbetween<0)
-        scale = scale.mul(new PVector(1,-1));
-
-      if(equalv(v10,v01)){
-        return;
-      }
-      if(equalv(translate,v01)){
-        rotate = ang10;
-        return;
-      }
-      if(equalv(v10,translate)){
-        rotate = (ang01-HALF_PI+TWO_PI)%TWO_PI;
-        return;
-      }
-
-      v10 = v10.mult(scale.x);
-      v01 = v01.mult(scale.y);
-
-      rotate = ang10;
-
-      float ang10_2 =  v10.heading();
-      float ang01_2 =  v01.heading();
-      if(ang10_2<0)
-        ang10 += PI;
-      if(ang01_2<0)
-        ang01 += PI;
-      shearX = -(ang01_2 - ang10_2 - HALF_PI);
-    }
+    return
+      equalf(PVector.angleBetween(v10,v01),HALF_PI) &&
+      equalf(v10.mag(),v01.mag());
   }
 
   class Path{

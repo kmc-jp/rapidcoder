@@ -28,7 +28,7 @@ class CollisionManager{
       }
 
       return isHitPathPath(s,t);
-    }catch(Exception e){ //<>//
+    }catch(Exception e){
       println(e + ": (" + s + ") , (" + t + ")");
       return false;
     }
@@ -153,11 +153,19 @@ class CollisionManager{
       }
       if(s.getKind()==ELLIPSE){
         Ellipse e = new Ellipse(s);
-        for(int i = 0; i < ELLIPSE_POINTS;++i){
+        for(int i = 0; i < ELLIPSE_POINTS; ++i){
           float ang = float(i) / float(ELLIPSE_POINTS) * TWO_PI;
           points.add(new PVector(e.x+e.rx*cos(ang),e.y+e.ry*sin(ang)));
         }
         isClose = true;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==POLYGON){
+        for(int i = 0; i < s.getVertexCount(); ++i){
+          points.add(s.getVertex(i));
+        }
+        isClose = s.isClosed();
         applyMat(sm);
         return;
       }

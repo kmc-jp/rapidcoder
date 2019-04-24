@@ -43,6 +43,15 @@ public class KeyboardManager {
   private IntDict prevSpecialKeyState;
 
   /**
+   * getKeyString用。
+   */
+  private String nextGetKeyStringRes;
+  /**
+   * getKeyString用。
+   */
+  private String getKeyStringRes;
+
+  /**
    * コンストラクタ
    */
   KeyboardManager() {
@@ -52,26 +61,15 @@ public class KeyboardManager {
     c_specialKeyState = new IntDict();
     prevKeyState = new IntDict();
     prevSpecialKeyState= new IntDict();
+    nextGetKeyStringRes = "";
+    getKeyStringRes = "";
   }
-  
+
   /**
    * 押したキーのStringが返ってくる
    */
-  public ArrayList<String> getKeyString(){
-    ArrayList<String> res = new ArrayList<String>();
-    for(int i = 0; i< keyState.size();++i){
-      String s_key = keyState.key(i);
-      if(keyState.value(i) == 1){
-        if(prevKeyState.hasKey(s_key)){
-          if(prevKeyState.get(s_key)==0){
-            res.add(s_key);
-          }
-        }else{
-          res.add(s_key);
-        }
-      }
-    }
-    return res;
+  public String getKeyString(){
+    return getKeyStringRes;
   }
 
   /**
@@ -92,6 +90,8 @@ public class KeyboardManager {
       }else{
         this.c_keyState.set(str(key), 1);
       }
+
+      nextGetKeyStringRes += key;
     }
   }
 
@@ -115,6 +115,8 @@ public class KeyboardManager {
     this.prevSpecialKeyState=specialKeyState;
     this.keyState = new IntDict(c_keyState.keyArray(), c_keyState.valueArray());
     this.specialKeyState = new IntDict(c_specialKeyState.keyArray(), c_specialKeyState.valueArray());
+    getKeyStringRes = nextGetKeyStringRes;
+    nextGetKeyStringRes = "";
   }
 
   /**
@@ -127,7 +129,7 @@ public class KeyboardManager {
       char c = s_key.charAt(0);
       if(Character.isUpperCase(c)||
          Character.isLowerCase(c)){
-        return 
+        return
           getKeyImpl(str(Character.toUpperCase(c)))||
           getKeyImpl(str(Character.toLowerCase(c)));
       }else{
@@ -137,7 +139,7 @@ public class KeyboardManager {
       return getKeyImpl(s_key);
     }
   }
-  
+
   boolean getKeyImpl(String s_key){
     if(this.keyState.hasKey(s_key) == true) {
       if(this.keyState.get(s_key) == 1) {
@@ -226,7 +228,7 @@ public class KeyboardManager {
       char c = s_key.charAt(0);
       if(Character.isUpperCase(c)||
          Character.isLowerCase(c)){
-        return 
+        return
           getPrevKeyImpl(str(Character.toUpperCase(c)))||
           getPrevKeyImpl(str(Character.toLowerCase(c)));
       }else{

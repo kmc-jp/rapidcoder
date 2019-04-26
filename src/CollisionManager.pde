@@ -129,21 +129,20 @@ class CollisionManager{
   }
 
   //平行移動+拡大のみであるか
-  boolean isGoodRect(PShape s){
+  boolean isGoodRect(PShape s) throws Exception{
     PMatrix2D sm = PShape2PMatrix2D(s);
-    PVector v00 = m.mult(new PVector(0,0),null);
-    PVector v10 = m.mult(new PVector(1,0),null).sub(v00);
-    PVector v01 = m.mult(new PVector(0,1),null).sub(v00);
+    PVector v00 = sm.mult(new PVector(0,0),null);
+    PVector v10 = sm.mult(new PVector(1,0),null).sub(v00);
+    PVector v01 = sm.mult(new PVector(0,1),null).sub(v00);
     return equalf(v10.y,0) && equalf(v01.x,0);
   }
 
   //平行移動+回転+いい拡大のみであるか
   boolean isGoodCircle(PShape s) throws Exception{
     PMatrix2D sm = PShape2PMatrix2D(s);
-    PVector v00 = m.mult(new PVector(0,0),null);
-    PVector v10 = m.mult(new PVector(1,0),null).sub(v00);
-    PVector v01 = m.mult(new PVector(0,1),null).sub(v00);
-
+    PVector v00 = sm.mult(new PVector(0,0),null);
+    PVector v10 = sm.mult(new PVector(1,0),null).sub(v00);
+    PVector v01 = sm.mult(new PVector(0,1),null).sub(v00);
     return
       equalf(PVector.angleBetween(v10,v01),HALF_PI) &&
       equalf(v10.mag(),v01.mag());

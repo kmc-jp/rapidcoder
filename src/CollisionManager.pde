@@ -18,6 +18,8 @@ class CollisionManager{
     try{
       PMatrix2D sm = PShape2PMatrix2D(s);
       PMatrix2D tm = PShape2PMatrix2D(t);
+
+      //Matrixが一致するなら楽をする
       if(equalm(sm,tm)){
         if(isCircle(s)&&isCircle(t)){
           return isHitCircleCircle(s,t);
@@ -27,6 +29,20 @@ class CollisionManager{
         }
       }
 
+      //Matrixの性質がいいなら楽をする
+      if(isCircle(s)&&isCircle(t)){
+        if(isGoodCircle(s)&&isGoodCircle(t)){
+          return isHitCircleCircleMat(s,t);
+        }
+      }
+      if(isRect(s)&&isRect(t)){
+        //変換をする
+        if(isGoodRect(s)&&isGoodRect(t)){
+          return isHitRectRectMat(s,t);
+        }
+      }
+
+      //多角形に変換して当たり判定を取る（重い）
       return isHitPathPath(s,t);
     }catch(Exception e){
       println(e + ": (" + s + ") , (" + t + ")");
@@ -39,6 +55,14 @@ class CollisionManager{
   boolean isHitRectRect(PShape s,PShape t) throws Exception {
     Rect sr = new Rect(s);
     Rect tr = new Rect(t);
+
+    return (abs(sr.cx-tr.cx)<sr.halfw+tr.halfw) && (abs(sr.cy-tr.cy)<sr.halfh+tr.halfh);
+  }
+
+  //isGoodRect
+  boolean isHitRectRectMat(PShape s,PShape t) throws Exception {
+    Rect sr = new Rect(s,true);
+    Rect tr = new Rect(t,true);
 
     return (abs(sr.cx-tr.cx)<sr.halfw+tr.halfw) && (abs(sr.cy-tr.cy)<sr.halfh+tr.halfh);
   }
@@ -109,6 +133,15 @@ class CollisionManager{
   boolean isHitCircleCircle(PShape s,PShape t) throws Exception {
     Ellipse sc = new Ellipse(s);
     Ellipse tc = new Ellipse(t);
+
+    float d = dist(sc.x,sc.y,tc.x,tc.y);
+    return d < sc.rx + tc.rx;
+  }
+
+  //isGoodCircle
+  boolean isHitCircleCircleMat(PShape s,PShape t) throws Exception {
+    Ellipse sc = new Ellipse(s,true);
+    Ellipse tc = new Ellipse(t,true);
 
     float d = dist(sc.x,sc.y,tc.x,tc.y);
     return d < sc.rx + tc.rx;
@@ -229,6 +262,21 @@ class CollisionManager{
         throw new Exception("RECTでないPShapeを変換しようとしました。:" + s);
       }
     }
+    public Rect(PShape s,boolean b) throws Exception{
+      this(s);
+      if(b){
+        PMatrix2D sm = PShape2PMatrix2D(s);
+        PVector v00 = sm.mult(new PVector(0,0),null);
+        PVector v10 = sm.mult(new PVector(1,0),null).sub(v00);
+        PVector v01 = sm.mult(new PVector(0,1),null).sub(v00);
+        float theta = atan2(cy,cx);
+        float length = mag(cx,cy);
+        cx += v00.x + cos(theta) * length * v10.mag() - cos(theta) * length;
+        cy += v00.y + sin(theta) * length * v01.mag() - sin(theta) * length;
+        halfw *= v10.mag();
+        halfh *= v01.mag();
+      }
+    }
     void set(float cx,float cy,float w,float h){
       this.cx = cx;
       this.cy = cy;
@@ -264,6 +312,23 @@ class CollisionManager{
         }
       }else{
         throw new Exception("ELLIPSEでないPShapeを変換しようとしました。:" + s);
+      }
+    }
+    //いい感じの変換をするか
+    public Ellipse(PShape s,boolean b) throws Exception {
+      this(s);
+      if(b){
+        PMatrix2D sm = PShape2PMatrix2D(s);
+        PVector v00 = sm.mult(new PVector(0,0),null);
+        PVector v10 = sm.mult(new PVector(1,0),null).sub(v00);
+        PVector v01 = sm.mult(new PVector(0,1),null).sub(v00);
+        float theta1 = atan2(y,x);
+        float theta2 = atan2(y,x) + v10.heading();
+        float length = mag(x,y);
+        x += v00.x + cos(theta2) * length * v10.mag() - cos(theta1)*length;
+        y += v00.y + sin(theta2) * length * v01.mag() - sin(theta1)*length;
+        rx *= v10.mag();
+        ry *= v01.mag();
       }
     }
     void set(float x,float y,float rx,float ry){

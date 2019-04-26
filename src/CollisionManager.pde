@@ -6,7 +6,7 @@ class CollisionManager{
   /**
    * ellipseをPathに変換するときの点の数。大きいほど精度が良くなるが処理が重くなる。
    */
-  final int ELLIPSE_POINTS = 16;
+  final int ELLIPSE_POINTS = 8;
 
   /**
    * 当たり判定を取得するメソッド 2次元で使うこと
@@ -36,7 +36,6 @@ class CollisionManager{
         }
       }
       if(isRect(s)&&isRect(t)){
-        //変換をする
         if(isGoodRect(s)&&isGoodRect(t)){
           return isHitRectRectMat(s,t);
         }
@@ -44,6 +43,24 @@ class CollisionManager{
 
       //多角形に変換して当たり判定を取る（重い）
       return isHitPathPath(s,t);
+    }catch(Exception e){
+      println(e + ": (" + s + ") , (" + t + ")");
+      return false;
+    }
+  }
+
+  /**
+   * 当たり判定を大雑把に取得するメソッド isHitより高速 2次元で使うこと 細長いやつに弱い
+   * @param s 1つめの図形
+   * @param t 2つめの図形
+   * @return 図形が重なっている=true, それ以外=false
+   */
+  public boolean isHitAbout(PShape s,PShape t){
+    try{
+      Ellipse sc = Path2Circle(new Path(s));
+      Ellipse tc = Path2Circle(new Path(t));
+
+      return isHitCircleCircle(sc,tc);
     }catch(Exception e){
       println(e + ": (" + s + ") , (" + t + ")");
       return false;
@@ -134,8 +151,7 @@ class CollisionManager{
     Ellipse sc = new Ellipse(s);
     Ellipse tc = new Ellipse(t);
 
-    float d = dist(sc.x,sc.y,tc.x,tc.y);
-    return d < sc.rx + tc.rx;
+    return isHitCircleCircle(sc,tc);
   }
 
   //isGoodCircle
@@ -143,6 +159,10 @@ class CollisionManager{
     Ellipse sc = new Ellipse(s,true);
     Ellipse tc = new Ellipse(t,true);
 
+    return isHitCircleCircle(sc,tc);
+  }
+
+  boolean isHitCircleCircle(Ellipse sc,Ellipse tc) throws Exception {
     float d = dist(sc.x,sc.y,tc.x,tc.y);
     return d < sc.rx + tc.rx;
   }
@@ -179,6 +199,49 @@ class CollisionManager{
     return
       equalf(PVector.angleBetween(v10,v01),HALF_PI) &&
       equalf(v10.mag(),v01.mag());
+  }
+
+  //多角形を雑な円に変換
+  Ellipse Path2Circle(Path p){
+    PVector g = Path2G(p);
+    float r = Path2average(p,g);
+    return new Ellipse(g.x,g.y,r,r);
+  }
+
+  //重心からの辺との距離の平均
+  float Path2average(Path p,PVector g){
+    //辺の長さのsum
+    float sum = 0;
+    //距離の和
+    float d = 0;
+    PVector m = p.points.get(p.points.size()-1);
+    for(int i = 0; i<p.points.size();++i){
+      PVector q = p.points.get(i);
+
+      sum += q.dist(m);
+      d += (g.dist(q) + g.dist(m))/2.0f * q.dist(m);
+
+      m = q;
+    }
+    return d/sum;
+  }
+
+  //重心
+  PVector Path2G(Path p){
+    float sum = 0;
+    float sumX = 0;
+    float sumY = 0;
+    PVector m = p.points.get(p.points.size()-1);
+    for(int i = 0; i<p.points.size();++i){
+      PVector q = p.points.get(i);
+
+      float s = q.x * m.y - q.y * m.x;
+      sum += s;//面積x2
+      sumX += (q.x + m.x) * s;//x重心x6
+      sumY += (q.y + m.y) * s;//y重心x6
+      m = q;
+    }
+    return new PVector(sumX/(3.0f*sum),sumY/(3.0f*sum));
   }
 
   class Path{

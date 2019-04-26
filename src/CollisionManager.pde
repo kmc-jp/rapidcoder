@@ -285,6 +285,33 @@ class CollisionManager{
         applyMat(sm);
         return;
       }
+      if(s.getKind()==LINE){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        isClose = false;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==TRIANGLE){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        points.add(new PVector(p[4],p[5]));
+        isClose = true;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==QUAD){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        points.add(new PVector(p[4],p[5]));
+        points.add(new PVector(p[6],p[7]));
+        isClose = true;
+        applyMat(sm);
+        return;
+      }
       throw new Exception("その図形はサポートされていません。" + s );
     }
 

@@ -19,7 +19,8 @@ Minim minim;
 // ゲームシステム用変数ここまで
 
 // 以下にグローバル変数を宣言します
-
+ArrayList<PShape> s;
+PShape t;
 // グローバル変数ここまで
 
 // スケッチ実行時に最初に１度だけ実行されます
@@ -59,7 +60,14 @@ void setup() {
   // ゲームシステムの初期化ここまで
 
   // 以下に追加の初期化処理を書きます
-
+  s = new ArrayList<PShape>();
+  for(int i = 0;i<100;++i){
+    ellipseMode(CENTER);
+    PShape a = createShape(ELLIPSE,0,0,80,80);
+    a.translate(random(0,800),random(0,600));
+    a.rotate(random(0,HALF_PI));
+    s.add(a);
+  }
   // 初期化処理ここまで
 }
 
@@ -71,7 +79,28 @@ void draw(){
   background(255, 255, 255);
 
   // 以下にゲームの処理を書きます
+  ellipseMode(CENTER);
+  rectMode(CENTER);
 
+
+  t = createShape(TRIANGLE,30, 75, 58, 20, 86, 75);
+  t.translate(mouseX,mouseY);
+  t.rotate(1f);
+  t.setFill(false);
+
+  for(PShape a : s){
+    if(colman.isHit(a,t)){
+      a.setFill(color(255,0,0));
+    }else{
+      a.setFill(color(0,0,255));
+    }
+    shape(a);
+  }
+
+  shape(t);
+
+  fill(0);
+  text(frameRate,0,0);
   // ゲームの処理ここまで
 }
 

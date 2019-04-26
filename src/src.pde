@@ -1,4 +1,4 @@
-// ライブラリを読み込み（よくわからなかったらとりあえずそのままにしておいてください） //<>// //<>//
+// ライブラリを読み込み（よくわからなかったらとりあえずそのままにしておいてください）
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -19,7 +19,8 @@ Minim minim;
 // ゲームシステム用変数ここまで
 
 // 以下にグローバル変数を宣言します
-
+PShape s;
+PShape t;
 // グローバル変数ここまで
 
 // スケッチ実行時に最初に１度だけ実行されます
@@ -30,7 +31,7 @@ void setup() {
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
   // CollisionManagerのインスタンスを作成
-  colman = new CollisionManager(this);
+  colman = new CollisionManager();
   // フォントを読み込む
   font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
   if(font == null) {
@@ -41,7 +42,7 @@ void setup() {
   // 文字描画位置を設定する（座標が左上）
   textAlign(LEFT, TOP);
   println("\t[ OK ]");
-  
+
   print("ビデオを初期化中......");
   // 画面サイズを設定（左から順に幅と高さ）
   size(800, 600);
@@ -49,17 +50,26 @@ void setup() {
   // １秒間にここに指定した回数だけdraw()が呼ばれる
   frameRate(30);
   println("\t[ OK ]");
-  
+
   print("サウンドシステムを初期化中......");
   // 音声ライブラリ初期化
   minim = new Minim(this);
   println("\t[ OK ]");
-  
+
   println("完了.");
   // ゲームシステムの初期化ここまで
-  
-  // 以下に追加の初期化処理を書きます
 
+  // 以下に追加の初期化処理を書きます
+  s = createShape(RECT,0,0,80,160);
+  s.translate(100, 0);
+  s.scale(5,2);
+  s.rotate(PI/4.0);
+  s.translate(100, 0);
+  t = createShape(RECT,0,0,80,160);
+  t.scale(5,2);
+  t.rotate(PI/4.0);
+  t.translate(100, 0);
+  t.translate(100, 0);
   // 初期化処理ここまで
 }
 
@@ -69,10 +79,11 @@ void draw(){
   keyman.updateKeys();
   // 画面の消去（背景色をここで指定する）
   background(255, 255, 255);
-  
+
   // 以下にゲームの処理を書きます
-  
-  // ゲームの処理ここまで //<>//
+  shape(t);
+  shape(s);
+  // ゲームの処理ここまで
 }
 
 // 何かキーが押されたときに行う処理を書きます（よくわからなかったらとりあえずそのままにしておいてください）

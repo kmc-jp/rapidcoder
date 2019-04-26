@@ -19,7 +19,8 @@ Minim minim;
 // ゲームシステム用変数ここまで
 
 // 以下にグローバル変数を宣言します
-
+PShape s;
+PShape t;
 // グローバル変数ここまで
 
 // スケッチ実行時に最初に１度だけ実行されます
@@ -30,7 +31,7 @@ void setup() {
   // KeyboardManagerのインスタンスを作成
   keyman = new KeyboardManager();
   // CollisionManagerのインスタンスを作成
-  colman = new CollisionManager(this);
+  colman = new CollisionManager();
   // フォントを読み込む
   font = createFont("fonts/VL-PGothic-Regular.ttf", 24);
   if(font == null) {
@@ -59,7 +60,16 @@ void setup() {
   // ゲームシステムの初期化ここまで
 
   // 以下に追加の初期化処理を書きます
-
+  s = createShape(RECT,0,0,80,160);
+  s.translate(100, 0);
+  s.scale(5,2);
+  s.rotate(PI/4.0);
+  s.translate(100, 0);
+  t = createShape(RECT,0,0,80,160);
+  t.scale(5,2);
+  t.rotate(PI/4.0);
+  t.translate(100, 0);
+  t.translate(100, 0);
   // 初期化処理ここまで
 }
 

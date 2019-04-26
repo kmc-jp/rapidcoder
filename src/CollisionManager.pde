@@ -203,6 +203,12 @@ class CollisionManager{
 
   //多角形を雑な円に変換
   Ellipse Path2Circle(Path p){
+    if(!p.isClose){
+      for(int i = p.points.size()-2;i>=1;--i){
+        p.points.add(p.points.get(i));
+      }
+    }
+
     PVector g = Path2G(p);
     float r = Path2average(p,g);
     return new Ellipse(g.x,g.y,r,r);

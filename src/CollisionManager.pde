@@ -285,6 +285,54 @@ class CollisionManager{
         applyMat(sm);
         return;
       }
+      if(s.getKind()==LINE){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        isClose = false;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==TRIANGLE){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        points.add(new PVector(p[4],p[5]));
+        isClose = true;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==QUAD){
+        float[] p = s.getParams();
+        points.add(new PVector(p[0],p[1]));
+        points.add(new PVector(p[2],p[3]));
+        points.add(new PVector(p[4],p[5]));
+        points.add(new PVector(p[6],p[7]));
+        isClose = true;
+        applyMat(sm);
+        return;
+      }
+      if(s.getKind()==ARC){
+        Ellipse e = new Ellipse(s);
+        for(int i = 0; i < ELLIPSE_POINTS; ++i){
+          float ang = lerp(e.start,e.last,float(i) / float(ELLIPSE_POINTS));
+          points.add(new PVector(e.x+e.rx*cos(ang),e.y+e.ry*sin(ang)));
+        }
+        if(e.mode==OPEN){
+          isClose = false;
+        }else
+        if(e.mode==CHORD){
+          isClose = true;
+        }else
+        if(e.mode==PIE){
+          isClose = true;
+          points.add(new PVector(e.x,e.y));
+        }else{
+          isClose = false;
+        }
+        applyMat(sm);
+        return;
+      }
       throw new Exception("その図形はサポートされていません。" + s );
     }
 
@@ -357,11 +405,14 @@ class CollisionManager{
   //ellipseMode(RADIUS)に対応する,座標+半径
   class Ellipse{
     float x,y,rx,ry;
+    float start = 0;
+    float last = TWO_PI;
+    int mode = 0;
     public Ellipse(float x,float y,float rx,float ry){
       set(x,y,rx,ry);
     }
     public Ellipse(PShape s) throws Exception {
-      if(s.getKind()==ELLIPSE){
+      if(s.getKind()==ELLIPSE || s.getKind()==ARC){
         float[] p = s.getParams();
         switch(PShape2EllipseMode(s)){
           case RADIUS:
@@ -378,6 +429,13 @@ class CollisionManager{
             break;
           default:
             throw new Exception("不正なellipseModeです。:" + s);
+        }
+        if(s.getKind()==ARC){
+          start = p[4];
+          last = p[5];
+          if(p.length>6){
+            mode = (int)p[6];
+          }
         }
       }else{
         throw new Exception("ELLIPSEでないPShapeを変換しようとしました。:" + s);

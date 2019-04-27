@@ -2,6 +2,9 @@ import java.io.*;
 import processing.core.*;
 import java.lang.reflect.*;
 
+/**
+ * 衝突判定を行うクラス
+ */
 public class CollisionManager{
   /**
    * ellipseをPathに変換するときの点の数。大きいほど精度が良くなるが処理が重くなる。

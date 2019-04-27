@@ -163,6 +163,13 @@ public class KeyboardManager {
 
 
   // 内部用 && 広報互換性を保つために残す
+  
+  /**
+   * DEPRECATED: 後方互換性のためにしばらく残す
+   * 特殊キーが押されているかどうかを取得します
+   * @param key_code 調べるキーのキーコード
+   * @return キーが押されているか？
+   */
   public boolean getSpecialKey(int key_code) {
     if(this.specialKeyState.hasKey(str(key_code)) == true) {
       if(this.specialKeyState.get(str(key_code)) == 1) {

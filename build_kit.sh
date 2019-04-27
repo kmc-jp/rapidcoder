@@ -13,7 +13,9 @@ else
     cp -r $SCRIPTPATH/src $BUILDPATH
     mv $BUILDPATH/src/src.pde $BUILDPATH/src/$SKETCHNAME.pde
     mv $BUILDPATH/src $BUILDPATH/$SKETCHNAME
-    zip -r $BUILDPATH/$SKETCHNAME.zip $BUILDPATH/$SKETCHNAME
+    pushd $BUILDPATH
+    zip -r $SKETCHNAME.zip $SKETCHNAME
+    popd
     mv $BUILDPATH/$SKETCHNAME.zip $SCRIPTPATH/
     rm -r $BUILDPATH
 fi

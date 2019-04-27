@@ -168,7 +168,7 @@ class CollisionManager{
   }
 
   //Pshapeが円かどうか
-  public boolean isCircle(PShape s) throws Exception {
+  boolean isCircle(PShape s) throws Exception {
     if(s.getKind()!=ELLIPSE){
       return false;
     }else{
@@ -177,7 +177,7 @@ class CollisionManager{
     }
   }
 
-  public boolean isRect(PShape s){
+  boolean isRect(PShape s){
     return s.getKind()==RECT;
   }
 
@@ -250,7 +250,7 @@ class CollisionManager{
     return new PVector(sumX/(3.0f*sum),sumY/(3.0f*sum));
   }
 
-  class Path{
+  private class Path{
     ArrayList<PVector> points;
     boolean isClose;
 
@@ -351,7 +351,7 @@ class CollisionManager{
     }
   }
 
-  class Rect{
+  private class Rect{
     float cx,cy,halfw,halfh;
     public Rect(float cx,float cy,float w,float h){
       set(cx,cy,w,h);
@@ -403,7 +403,7 @@ class CollisionManager{
   }
 
   //ellipseMode(RADIUS)に対応する,座標+半径
-  class Ellipse{
+  private class Ellipse{
     float x,y,rx,ry;
     float start = 0;
     float last = TWO_PI;

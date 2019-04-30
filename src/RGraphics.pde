@@ -2,9 +2,9 @@
  * 角度を指定して図形を描画する関数群
  */
 public class RGraphics {
-  
+
   public RGraphics() {}
-  
+
   /**
    * 回転させた長方形を描画します
    * @param xc 中心X座標
@@ -189,7 +189,7 @@ public class RGraphics {
     translate(xc, yc);
     rotate(r);
     scale(zx, zy);
-    ellipse(xc, yc, w, h);
+    ellipse(0, 0, w, h);
     popMatrix();
   }
 
@@ -389,7 +389,7 @@ void rzEllipse(float xc, float yc, float w, float h, float r, float zx, float zy
   translate(xc, yc);
   rotate(r);
   scale(zx, zy);
-  ellipse(xc, yc, w, h);
+  ellipse(0, 0, w, h);
   popMatrix();
 }
 

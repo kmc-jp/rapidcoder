@@ -71,7 +71,8 @@ void draw(){
   background(255, 255, 255);
 
   // 以下にゲームの処理を書きます
-
+  MyShape m =mycircle(5);
+  shape(m);
   // ゲームの処理ここまで
 }
 

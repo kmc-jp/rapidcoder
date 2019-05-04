@@ -1,5 +1,7 @@
 # rapidcoder
 
+最新版のダウンロードは[コチラ](https://github.com/kmc-jp/rapidcoder/releases/download/2019.1r2/rapid2019.zip)
+
 ## これは何か？
 ラピゲの開発キット。Processingの機能をいい感じにラップしているらしい。
 
